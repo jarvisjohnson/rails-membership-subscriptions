@@ -1,0 +1,43 @@
+- content_for :head do
+  = render 'javascript'
+.authform
+  = form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :role => 'form', :class => 'payment-form'}) do |f|
+    %h3 Sign up
+    #stripe_error.alert.alert-danger{:style => "display:none"}
+    = devise_error_messages!
+    .form-group
+      = f.label :name
+      = f.text_field :name, class: 'form-control'
+    .form-group
+      = f.label :name
+      = f.text_field :name, :autofocus => true, class: 'form-control'
+    .form-group
+      = f.label :email
+      = f.email_field :email, class: 'form-control'
+    .form-group
+      = f.label :password
+      = f.password_field :password, class: 'form-control'
+    .form-group
+      = f.label :password_confirmation
+      = f.password_field :password_confirmation, class: 'form-control'
+    - if resource.stripe_token
+      %p Credit card acceptance is pending.
+    - else
+      .form-group
+        = label_tag :card_number, "Credit Card Number"
+        = text_field_tag :card_number, nil, name: nil, class: 'form-control', data: { stripe: 'number' }
+      .form-group
+        = label_tag :card_code, "Card Security Code"
+        = text_field_tag :card_code, nil, name: nil, class: 'form-control', data: { stripe: 'cvc' }
+      %br/
+      .form-group
+        = label_tag :card_month, "Card Expiry"
+        = select_month nil, { use_two_digit_numbers: true}, { name: nil, data: {stripe: 'exp-month' } }
+        = select_year nil, {start_year: Date.today.year, end_year: Date.today.year+10}, { name: nil, data: {stripe: 'exp-year' } }
+    %br/
+    = f.fields_for :coupon do |ff|
+      .form-group
+        = ff.label 'Coupon code'
+        = ff.text_field :code, :class => 'form-control'
+    = f.hidden_field :stripe_token
+    = f.submit 'Sign up', :class => 'button right'

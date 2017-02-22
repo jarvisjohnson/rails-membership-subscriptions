@@ -1,0 +1,7 @@
+%h1 Payment Failed
+%p
+  Your payment failed for purchase of #{Rails.application.secrets.product_title}.
+%p
+  The payment processor reported:
+%p
+  "#{user.errors[:base]}"

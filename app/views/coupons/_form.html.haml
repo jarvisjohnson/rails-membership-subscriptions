@@ -1,0 +1,31 @@
+= form_for(@coupon) do |f|
+  - if @coupon.errors.any?
+    #error_explanation
+      %h2
+        = pluralize(@coupon.errors.count, "error")
+        prohibited this coupon from being saved:
+      %ul
+        - @coupon.errors.full_messages.each do |message|
+          %li= message
+  .field
+    = f.label :code
+    %br/
+    = f.text_field :code
+  .field
+    = f.label :role
+    %br/
+    = f.text_field :role
+  .field
+    = f.label :mailing_list_id
+    %br/
+    = f.text_field :mailing_list_id
+  .field
+    = f.label :list_group
+    %br/
+    = f.text_field :list_group
+  .field
+    = f.label :price
+    %br/
+    = f.number_field :price
+  .actions
+    = f.submit
